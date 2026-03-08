@@ -1,0 +1,270 @@
+/* ── Reset & variables ─────────────────────────────────────────────────────── */
+:root {
+  --bg:          #141520;
+  --surface:     #1c1e2e;
+  --surface2:    #252840;
+  --border:      #2e3150;
+  --accent:      #6c63ff;
+  --accent-h:    #5a52e0;
+  --text:        #e8eaf0;
+  --muted:       #7b80a0;
+  --warn:        #f0a040;
+  --danger:      #e05050;
+  --success:     #40c0a0;
+  --radius:      8px;
+  --check-a:     #2a2c3e;
+  --check-b:     #1c1e2e;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 13px;
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── App shell ─────────────────────────────────────────────────────────────── */
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 14px 16px;
+  gap: 12px;
+  overflow-y: auto;
+}
+
+header {
+  display: flex;
+  align-items: center;
+}
+.logo {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+/* ── Drop zone ─────────────────────────────────────────────────────────────── */
+.drop-zone {
+  flex-shrink: 0;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 28px 20px;
+  text-align: center;
+  background: var(--surface);
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.drop-zone:hover,
+.drop-zone.drag-over {
+  border-color: var(--accent);
+  background: rgba(108, 99, 255, .06);
+}
+.drop-zone.processing {
+  opacity: .5;
+  cursor: wait;
+}
+.drop-inner { pointer-events: none; }
+
+.drop-arrow {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  color: var(--accent);
+  opacity: .7;
+}
+.drop-primary {
+  font-size: .95rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.drop-sub {
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.drop-hint {
+  color: var(--muted);
+  font-size: .75rem;
+}
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: inherit;
+  text-decoration: underline;
+  pointer-events: all;
+}
+
+/* ── Source bar ────────────────────────────────────────────────────────────── */
+.source-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  flex-shrink: 0;
+}
+#source-img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--check-a);
+}
+.source-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.source-name {
+  font-weight: 600;
+  font-size: .88rem;
+  word-break: break-all;
+}
+.source-dims { color: var(--muted); font-size: .78rem; }
+.crop-notice { color: var(--warn); font-size: .75rem; }
+
+/* ── Output section ────────────────────────────────────────────────────────── */
+.output-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── Tiles ─────────────────────────────────────────────────────────────────── */
+.tiles {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 10px 8px;
+}
+.tile-label {
+  font-size: .72rem;
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: .5px;
+}
+.tile-canvas {
+  /* checkerboard transparency background */
+  background-image:
+    linear-gradient(45deg, var(--check-a) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--check-a) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--check-a) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--check-a) 75%);
+  background-size: 10px 10px;
+  background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+  background-color: var(--check-b);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.tile-canvas img {
+  display: block;
+}
+
+/* Tile display sizes — replaces runtime inline style mutations */
+.tile-canvas-96 { width: 96px; height: 96px; }
+.tile-canvas-64 { width: 64px; height: 64px; }
+.tile-img-96    { width: 96px; height: 96px; }
+.tile-img-64    { width: 64px; height: 64px; }
+.pixelated      { image-rendering: pixelated; }
+.tile-save-btn {
+  font-size: .72rem;
+  padding: 4px 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background .12s, border-color .12s;
+  white-space: nowrap;
+}
+.tile-save-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ── Action buttons ────────────────────────────────────────────────────────── */
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-shrink: 0;
+}
+.btn-primary {
+  padding: 9px 24px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-size: .88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .12s;
+}
+.btn-primary:hover:not(:disabled) { background: var(--accent-h); }
+
+.btn-secondary {
+  padding: 9px 20px;
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: .88rem;
+  cursor: pointer;
+  transition: background .12s;
+}
+.btn-secondary:hover:not(:disabled) { background: #303560; }
+
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+
+/* ── Toast ─────────────────────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2a2c40;
+  color: var(--text);
+  padding: 9px 20px;
+  border-radius: 6px;
+  font-size: .82rem;
+  max-width: 400px;
+  text-align: center;
+  z-index: 9999;
+  pointer-events: none;
+  border: 1px solid var(--border);
+  transition: opacity .25s;
+}
+.toast.error   { background: var(--danger); border-color: var(--danger); }
+.toast.success { background: var(--success); color: #fff; border-color: var(--success); }
+
+/* ── Utility ───────────────────────────────────────────────────────────────── */
+.hidden { display: none !important; }

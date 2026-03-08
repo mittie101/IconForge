@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; img-src 'self' data:; style-src 'self';">
+  <title>IconForge</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+
+    <header>
+      <span class="logo">IconForge</span>
+    </header>
+
+    <!-- Drop / paste zone -->
+    <div id="drop-zone" class="drop-zone">
+      <div class="drop-inner">
+        <div class="drop-arrow">↑</div>
+        <p class="drop-primary">Drop an image here</p>
+        <p class="drop-sub">
+          or <button id="browse-btn" class="link-btn">browse files</button>
+          &nbsp;—&nbsp;PNG, JPG, WEBP, BMP
+        </p>
+        <p class="drop-hint">Ctrl+V to paste from clipboard</p>
+      </div>
+      <input type="file" id="file-input" accept=".png,.jpg,.jpeg,.webp,.bmp" hidden>
+    </div>
+
+    <!-- Source preview (hidden until image loaded) -->
+    <div id="source-bar" class="source-bar hidden">
+      <img id="source-img" src="" alt="source preview">
+      <div class="source-meta">
+        <span id="source-name" class="source-name"></span>
+        <span id="source-dims" class="source-dims"></span>
+        <span id="crop-notice" class="crop-notice hidden">Auto-cropped to square</span>
+      </div>
+    </div>
+
+    <!-- Output tiles (hidden until image loaded) -->
+    <div id="output-section" class="output-section hidden">
+      <div id="tiles" class="tiles"></div>
+      <div class="actions">
+        <button id="save-bundle-btn" class="btn-primary" disabled>
+          Save <span id="bundle-label"></span>.ico
+        </button>
+        <button id="save-zip-btn" class="btn-secondary" disabled>
+          Save All as ZIP
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Toast notification -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

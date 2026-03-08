@@ -1,0 +1,52 @@
+{
+  "name": "iconforge",
+  "version": "1.0.0",
+  "description": "Drop an image, get a professional multi-size 32-bit .ico file",
+  "author": "Antony Morrison <antony@walkingfishsoftware.com>",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "test": "jest",
+    "rebuild": "electron-rebuild -f -w sharp",
+    "postinstall": "electron-rebuild -f -w sharp"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ]
+  },
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^3.6.0",
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "jest": "^29.7.0"
+  },
+  "build": {
+    "appId": "com.walkingfishsoftware.iconforge",
+    "productName": "IconForge",
+    "copyright": "Copyright © 2026 Walking Fish Software",
+    "icon": "icon.ico",
+    "win": {
+      "target": "nsis",
+      "icon": "icon.ico",
+      "legalTrademarks": "Walking Fish Software"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "icon.ico",
+      "renderer/**/*",
+      "node_modules/**/*"
+    ]
+  }
+}
